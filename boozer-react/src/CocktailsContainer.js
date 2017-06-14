@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 
 import CocktailDetail from './CocktailDetail'
+import CocktailNewForm from './CocktailNewForm'
 
 export default class CocktailsContainer extends Component{
   constructor(){
@@ -9,6 +10,7 @@ export default class CocktailsContainer extends Component{
     this.state = {
       cocktails: []
     }
+    this.createCocktail = this.createCocktail.bind(this)
   }
 
   componentDidMount(){
@@ -19,6 +21,26 @@ export default class CocktailsContainer extends Component{
         cocktails: cocktails
       })
     })
+  }
+
+  createCocktail(cocktail){
+   fetch('http://localhost:3000/api/v1/cocktails', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({
+        cocktail: cocktail
+      })
+    }).then(response => response.json() )
+      .then(cocktail => this.setState((previousState) => {
+        return {
+          cocktails: [...previousState.cocktails, cocktail]
+        }
+      })
+    )
+
   }
 
   render(){
@@ -32,6 +54,8 @@ export default class CocktailsContainer extends Component{
             </ul>
           </div>
           <div className="col-md-8">
+          <Switch>
+            <Route path = "/cocktails/new" render = {() => <CocktailNewForm onSubmit={this.createCocktail} />} />
             <Route path="/cocktails/:id" render={(routerProps) => {
                 const id = routerProps.match.params.id
                 const cocktail = this.state.cocktails.find( cocktail => cocktail.id === parseInt(id) )
@@ -43,6 +67,7 @@ export default class CocktailsContainer extends Component{
                 }
               }
             } />
+            </Switch>
           </div>
         </div>
       </div>
