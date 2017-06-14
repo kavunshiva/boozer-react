@@ -9,7 +9,7 @@ export default function CocktailDetail(props){
       <h5>Instructions</h5>
       {props.cocktail.instructions}
       <h5>Proportions</h5>
-      <ul>
+      <ul className="list-unstyled">
         {props.cocktail.proportions.map( proportion => <li key={proportion.id}>{proportion.ingredient_name}: {proportion.amount}</li>)}
       </ul>
     </div>

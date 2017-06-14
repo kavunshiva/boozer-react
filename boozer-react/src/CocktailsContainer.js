@@ -27,7 +27,7 @@ export default class CocktailsContainer extends Component{
         <div className="row">
           <div className="col-md-4">
             <h3>Some delicious cocktails</h3>
-            <ul>
+            <ul className="list-unstyled">
               {this.state.cocktails.map(cocktail => <li key={cocktail.id}><Link to={`/cocktails/${cocktail.id}`}>{cocktail.name}</Link></li>)}
             </ul>
           </div>
